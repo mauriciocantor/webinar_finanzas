@@ -64,13 +64,20 @@
     };
 
 
-    var videos = function() {
+    /*var videos = function() {
 
 
         $(document).ready(function () {
             $('#play-video').on('click', function (ev) {
                 $(".fh5co_hide").fadeOut();
                 $("#video")[0].src += "&autoplay=1";
+                ev.preventDefault();
+
+            });
+
+            $('#play-video_1').on('click', function (ev) {
+                $(".fh5co_hide_1").fadeOut();
+                $("#video_1")[0].src += "&autoplay=1";
                 ev.preventDefault();
 
             });
@@ -104,7 +111,7 @@
 
             });
         });
-    };
+    };*/
 
     var googleTranslateFormStyling = function() {
         $(window).on('load', function () {
@@ -181,7 +188,7 @@
 	
 	$(function(){
 		owlCarousel();
-		videos();
+		//videos();
         contentWayPoint();
 		goToTop();
 		googleTranslateFormStyling();

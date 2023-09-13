@@ -23,6 +23,12 @@ class Video
     #[ORM\Column]
     private array $availablesRoles = [];
 
+    #[ORM\Column(type: Types::BINARY)]
+    private $withTest = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +66,30 @@ class Video
     public function setAvailablesRoles(array $availablesRoles): static
     {
         $this->availablesRoles = $availablesRoles;
+
+        return $this;
+    }
+
+    public function getWithTest()
+    {
+        return $this->withTest;
+    }
+
+    public function setWithTest($withTest): static
+    {
+        $this->withTest = $withTest;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
 
         return $this;
     }
