@@ -1,0 +1,18 @@
+{% extends 'base_error.html.twig' %}
+{% block stylesheets %}
+    <link href="{{ asset('css/style_forbbiden.css') }}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+{% block body %}
+    <!-- partial:index.partial.html -->
+    <div class="lock"></div>
+    <div class="message">
+        <h1>Acceso no permitido.</h1>
+        <p>Este contenido no esta permitido para el tipo de usuario con el que usted fue creado, si requiere acceso por favor comuníquese con el administrador.</p>
+        <p><a href="{{ path('app_index') }}">Volver al inicio</a></p>
+    </div>
+    <!-- partial -->
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}

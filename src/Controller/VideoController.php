@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Video;
 use App\Service\VideoServices;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use function PHPUnit\Framework\throwException;
 
 class VideoController extends AbstractController
 {
@@ -35,6 +37,21 @@ class VideoController extends AbstractController
 
         return $this->render('video/index.html.twig', [
             'videos' => $videos,
+        ]);
+    }
+
+    #[Route('/learning/{video}', name: 'learning_video')]
+    public function learning(Video $video): Response
+    {
+        $videos = $this->videoServices->getVideosByRole(
+            $this->security->getUser()->getRoles()
+        );
+        if(!in_array($video,$videos)){
+            return $this->redirectToRoute('_preview_error',["code"=>403]);
+        }
+
+        return $this->render('video/learning.html.twig',[
+            'video'=>$video
         ]);
     }
 }
