@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\VideoRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,6 +33,19 @@ class Video
 
     #[ORM\Column(length: 255)]
     private ?string $videoId = null;
+
+    #[ORM\OneToMany(mappedBy: 'video', targetEntity: VideoUser::class)]
+    private Collection $videoUsers;
+
+    #[ORM\OneToMany(mappedBy: 'video', targetEntity: Question::class)]
+    private Collection $questions;
+
+
+    public function __construct()
+    {
+        $this->videoUsers = new ArrayCollection();
+        $this->questions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -108,4 +123,65 @@ class Video
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, VideoUser>
+     */
+    public function getVideoUsers(): Collection
+    {
+        return $this->videoUsers;
+    }
+
+    public function addVideoUser(VideoUser $videoUser): static
+    {
+        if (!$this->videoUsers->contains($videoUser)) {
+            $this->videoUsers->add($videoUser);
+            $videoUser->setVideo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVideoUser(VideoUser $videoUser): static
+    {
+        if ($this->videoUsers->removeElement($videoUser)) {
+            // set the owning side to null (unless already changed)
+            if ($videoUser->getVideo() === $this) {
+                $videoUser->setVideo(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Question>
+     */
+    public function getQuestions(): Collection
+    {
+        return $this->questions;
+    }
+
+    public function addQuestion(Question $question): static
+    {
+        if (!$this->questions->contains($question)) {
+            $this->questions->add($question);
+            $question->setVideo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestion(Question $question): static
+    {
+        if ($this->questions->removeElement($question)) {
+            // set the owning side to null (unless already changed)
+            if ($question->getVideo() === $this) {
+                $question->setVideo(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

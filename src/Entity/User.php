@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -28,6 +30,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: VideoUser::class)]
+    private Collection $videoUsers;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserAnswer::class)]
+    private Collection $userAnswers;
+
+    public function __construct()
+    {
+        $this->videoUsers = new ArrayCollection();
+        $this->userAnswers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -97,5 +111,65 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, VideoUser>
+     */
+    public function getVideo(): Collection
+    {
+        return $this->videoUsers;
+    }
+
+    public function addVideo(VideoUser $video): static
+    {
+        if (!$this->videoUsers->contains($video)) {
+            $this->videoUsers->add($video);
+            $video->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVideo(VideoUser $video): static
+    {
+        if ($this->videoUsers->removeElement($video)) {
+            // set the owning side to null (unless already changed)
+            if ($video->getUser() === $this) {
+                $video->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserAnswer>
+     */
+    public function getUserAnswers(): Collection
+    {
+        return $this->userAnswers;
+    }
+
+    public function addUserAnswer(UserAnswer $userAnswer): static
+    {
+        if (!$this->userAnswers->contains($userAnswer)) {
+            $this->userAnswers->add($userAnswer);
+            $userAnswer->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserAnswer(UserAnswer $userAnswer): static
+    {
+        if ($this->userAnswers->removeElement($userAnswer)) {
+            // set the owning side to null (unless already changed)
+            if ($userAnswer->getUser() === $this) {
+                $userAnswer->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
