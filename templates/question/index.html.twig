@@ -1,0 +1,46 @@
+{% extends 'base_error.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        {% for question in video.questions %}
+            {% if question.type == 1 %}
+                <p class="lead">
+                    Selecciona la respuesta correcta.
+                </p>
+                <div class="row">
+                    <div class="col-3 col-md-4">
+                        <p>{{ question.question }}</p>
+                    </div>
+                    <div class="col-9 col-md-8">
+                        {% for answer in question.answers %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="{{ question.id }}" id="{{ answer.id }}" value="{{ answer.id }}">
+                                <label class="form-check-label" for="{{ answer.id }}">
+                                    {{ answer.text }}
+                                </label>
+                            </div>
+                            <br>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% elseif question.type == 2 %}
+                <p class="lead">
+                    Completa la frase con la palabra que corresponde.
+                </p>
+                <div class="row">
+                    <div class="col-8 col-md-9">
+                        <p>{{ question.question }}</p>
+                    </div>
+                    <div class="col-4 col-md-3">
+                        <div class="form-group">
+                            <label for="textoFaltante">Texto Faltante</label>
+                            <input type="text" class="form-control" id="textoFaltante" aria-describedby="textoFaltante">
+                            <small id="textoFaltante" class="form-text text-muted">Debes escribir el texto que hace falta en la descripción.</small>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            <hr>
+        {% endfor %}
+    </div>
+{% endblock %}
