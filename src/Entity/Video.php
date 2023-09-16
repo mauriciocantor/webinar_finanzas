@@ -40,11 +40,15 @@ class Video
     #[ORM\OneToMany(mappedBy: 'video', targetEntity: Question::class)]
     private Collection $questions;
 
+    #[ORM\OneToMany(mappedBy: 'video', targetEntity: AlphabetSoup::class)]
+    private Collection $alphabetSoups;
+
 
     public function __construct()
     {
         $this->videoUsers = new ArrayCollection();
         $this->questions = new ArrayCollection();
+        $this->alphabetSoups = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -178,6 +182,36 @@ class Video
             // set the owning side to null (unless already changed)
             if ($question->getVideo() === $this) {
                 $question->setVideo(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AlphabetSoup>
+     */
+    public function getAlphabetSoups(): Collection
+    {
+        return $this->alphabetSoups;
+    }
+
+    public function addAlphabetSoup(AlphabetSoup $alphabetSoup): static
+    {
+        if (!$this->alphabetSoups->contains($alphabetSoup)) {
+            $this->alphabetSoups->add($alphabetSoup);
+            $alphabetSoup->setVideo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAlphabetSoup(AlphabetSoup $alphabetSoup): static
+    {
+        if ($this->alphabetSoups->removeElement($alphabetSoup)) {
+            // set the owning side to null (unless already changed)
+            if ($alphabetSoup->getVideo() === $this) {
+                $alphabetSoup->setVideo(null);
             }
         }
 

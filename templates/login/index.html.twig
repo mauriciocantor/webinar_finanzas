@@ -1,23 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello LoginController!{% endblock %}
-
 {% block body %}
     {% if error %}
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
-    <form action="{{ path('app_login') }}" method="post">
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-        <label for="username">Email:</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}">
+    <div class="container-fluid">
+        <div class="row mt-4">
+            <div class="col-8">
+                <div class="row justify-content-center pt-2 pb-4 card-body">
+                    <div class="col-12 col-md-12 col-lg-12 card p-5">
+                        <p class="lead">
+                            Ingresa al aprendizaje financiero
+                        </p>
+    {#                    <div class="input-group">#}
+    {#                        <span class="input-group-addon fh5co_footer_text_box bg-info" id="basic-addon1"><i class="fa fa-envelope"></i></span>#}
+                        <form action="{{ path('app_login') }}" method="post">
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                            <label for="username" class="text-black">Email:</label>
+                            <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control">
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="_password">
+                            <label for="password" class="text-black">Password:</label>
+                            <input type="password" id="password" name="_password" class="form-control">
 
-        {# If you want to control the URL the user is redirected to on success
-        <input type="hidden" name="_target_path" value="/account"> #}
+                            {# If you want to control the URL the user is redirected to on success#}
+                            <input type="hidden" name="_target_path" value="/video">
 
-        <button type="submit">login</button>
-    </form>
+                            <button type="submit" class="input-group-addon fh5co_footer_subcribe mt-3">login</button>
+                        </form>
+    {#                        <input type="text" class="form-control fh5co_footer_text_box" placeholder="Enter your email..." aria-describedby="basic-addon1">#}
+    {#                        <a href="#" class="input-group-addon fh5co_footer_subcribe" id="basic-addon12"> <i class="fa fa-paper-plane-o"></i>&nbsp;&nbsp;Subscribe</a>#}
+    {#                    </div>#}
+                    </div>
+                </div>
+            </div>
+            <div class="row col-4">
+                <picture>
+{#                    <source srcset="..." type="image/svg+xml">#}
+                    <img src="{{ asset('images/focused-american-men-8165458_1280.jpg') }}" class="img-fluid img-thumbnail" alt="...">
+                </picture>
+{#                <img src="" class="img-fluid rounded float-start m-2 mr-5" alt="register_man">#}
+            </div>
+        </div>
+    </div>
+
 {% endblock %}

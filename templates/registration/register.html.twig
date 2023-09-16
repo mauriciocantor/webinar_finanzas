@@ -3,17 +3,48 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+    <div class="container-fluid">
+        <div class="row mt-4">
+            <div class="row col-4">
+                <picture>
+                    {#                    <source srcset="..." type="image/svg+xml">#}
+                    <img src="{{ asset('images/pexels-anna-tarazevich-14751274.jpg') }}" class="img-fluid img-thumbnail" alt="...">
+                </picture>
+                {#                <img src="" class="img-fluid rounded float-start m-2 mr-5" alt="register_man">#}
+            </div>
+            <div class="col-8">
+                <div class="row justify-content-center pt-2 pb-4 card-body">
+                    <div class="col-12 col-md-12 col-lg-12 card p-5">
+                        <p class="lead">
+                            Regístrate para obtener más conocimiento financiero.
+                        </p>
+                        {#                    <div class="input-group">#}
+                        {#                        <span class="input-group-addon fh5co_footer_text_box bg-info" id="basic-addon1"><i class="fa fa-envelope"></i></span>#}
+                        {{ form_errors(registrationForm) }}
 
-    {{ form_errors(registrationForm) }}
+                        {{ form_start(registrationForm) }}
+                        <div class="mb-3">
+                            {{ form_row(registrationForm.email) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_row(registrationForm.plainPassword,{
+                                'label':'Contraseña'
+                            }) }}
+                        </div>
+                        <div class="mb-3 form-check col-12 text-center">
+                            {{ form_widget(registrationForm.agreeTerms) }}
+                            {{ form_label(registrationForm.agreeTerms) }}
+                        </div>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+                        <button type="submit" class="btn btn-primary">Register</button>
+                        {{ form_end(registrationForm) }}
+                        {#                        <input type="text" class="form-control fh5co_footer_text_box" placeholder="Enter your email..." aria-describedby="basic-addon1">#}
+                        {#                        <a href="#" class="input-group-addon fh5co_footer_subcribe" id="basic-addon12"> <i class="fa fa-paper-plane-o"></i>&nbsp;&nbsp;Subscribe</a>#}
+                        {#                    </div>#}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
 {% endblock %}

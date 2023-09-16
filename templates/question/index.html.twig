@@ -42,5 +42,6 @@
             {% endif %}
             <hr>
         {% endfor %}
+        {{ include('question/alphabet_soup.html.twig',{'alphabetSoup': alphabetSoup, 'alphabetSoupFromVideo':alphabetSoupFromVideo}) }}
     </div>
 {% endblock %}

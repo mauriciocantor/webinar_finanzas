@@ -1,0 +1,53 @@
+<script type="text/javascript" language="javascript" src="{{ asset('js/funSopa.js') }}"></script>
+<div class="row">
+        <div class="col-8">
+                <table align="center" frame="box" rules="alls" border="1" cellspacing="0" cellpadding="2" class="tablaSopa" style="z-index:2;">
+                    {% set sopa = alphabetSoup %}
+                    {% for row in alphabetSoup %}
+                        <tr>
+                            {% set i = loop.index0 %}
+                            {% set lengthSoup = (alphabetSoup|length)-1 %}
+                            {% for column in 0..lengthSoup %}
+                                <td
+                                        id="letra_{{ i }}_{{ column }}"
+                                        value="{{ alphabetSoup[i][column] }}"
+                                        style="text-align:center;width:20px;height:20px;cursor:pointer;cursor:hand;"
+                                        onMouseDown="marcarSopa({{ i }},{{ column }})"
+                                        class="celdasSopa"
+                                >{{ alphabetSoup[i][column] }}</td>
+                {#                {% set sopa[i][column] = alphabetSoup[i][column] %}#}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>
+        </div>
+        <div class="col-4">
+                <ul class="list-group">
+                        {% for list in alphabetSoupFromVideo.words %}
+                                <li class="list-group-item " id="list_{{ list }}">{{ list }}</li>
+                        {% endfor %}
+                </ul>
+                
+        </div>
+</div>
+<script language="JavaScript" type="text/javascript">
+        var sopa = new Array();
+
+    {% for row in alphabetSoup %}
+
+        {% set i = loop.index0 %}
+        sopa[{{ i }}] = new Array();
+        {% for column in 0..(alphabetSoup|length - 1 ) %}
+            ReconoceCapas('letra_{{ i }}_{{ loop.index0 }}');
+            sopa[{{ i }}][{{ loop.index0 }}] = "{{ alphabetSoup[i][loop.index0] }}";
+        {% endfor %}
+    {% endfor %}
+    filas = {{ alphabetSoupFromVideo.rows }};
+    columnas = {{ alphabetSoupFromVideo.columnSoup }};
+    originWords = "{{ alphabetSoupFromVideo.words|join(',') }}";
+</script>
+<form name="formulario">
+        <center>
+                <input type="button" value="Limpiar Sopa" onClick="borrar({{ alphabetSoupFromVideo.rows }}, {{ alphabetSoupFromVideo.columnSoup }});" />
+        </center>
+</form>
