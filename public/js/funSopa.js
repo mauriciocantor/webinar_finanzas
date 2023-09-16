@@ -1,5 +1,7 @@
 var NS7=(document.getElementById && !document.all)?1:0;
 var word = [];
+var max = 4;
+
 function ReconoceCapas(capitas){//alert(capitas);
      var cadena="";
      if (NS7)  {
@@ -7,8 +9,6 @@ function ReconoceCapas(capitas){//alert(capitas);
     	  eval (cadena);
         }
 }
-
-
 
 
 var estadoSopa = 0;
@@ -158,17 +158,29 @@ function marcarSopa(fila,columna){
 	}
 
   	idList = word.join('');
-	console.log(originWords.includes(idList));
-  	if(!originWords.includes(idList) && !clear){
-		estadoSopa = 0;
-		marcarSopa(fila,columna, true);
-		clear=false;
-  	}
+	if(typeof originWords == 'string') {
+		originWords = originWords.split(',');
+	}
+  	if(!originWords.includes(idList)){
+		max--;
+		$('#staticFail').val(max);
+		if(max<=0){
+			$('#alert-fail').attr('style','display:block');
+			$('#btn-limpiar').attr('style','display:block');
+		}
+  	}else{
+		  console.log(typeof originWords, originWords);
+		originWords.splice(originWords.indexOf(idList),1);
+		if(originWords.length<=0){
+			$('#alert-success').addClass('show');
+			$('#alert-success').attr('style','display:block');
+		}
+	}
 	estadoSopa = 0;
 	colorActual = generaColor();
 
   	word = [];
-	  console.log('#list_'+idList, $('#list_'+idList));
+
 	  $('#list_'+idList).addClass('active');
 	var campoFormulario = "palabra"+numSeccion+"_"+numLetra;
 	//setValue(nombreFormulario,campoFormulario,valor);
@@ -209,6 +221,10 @@ function borrar(filas, columnas){
 			eval("letra"+"_"+i+"_"+j+".style.background = '#FFFFFF';");
 	 	}
 	}
+	max=4;
+	$('#alert-fail').attr('style','display:none');
+	$('#staticFail').val(max);
+	$('#btn-limpiar').attr('style','display:none');
 	
 }//borrar
 

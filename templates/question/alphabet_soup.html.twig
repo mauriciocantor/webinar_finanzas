@@ -1,6 +1,14 @@
 <script type="text/javascript" language="javascript" src="{{ asset('js/funSopa.js') }}"></script>
 <div class="row">
-        <div class="col-8">
+        <div class="col-8" >
+                <div class="row">
+                        <div class="alert alert-success alert-dismissible fade" role="alert" id="alert-success"  style="display:none;" >
+                                <h4 class="alert-heading">¡Felicitaciones!</h4>
+                                <p>Lograste completar la Sopa de Letras, sigue así.</p>
+                                <hr>
+                                <p class="mb-0">Si tienes videos pendientes por ver, ya puedes continuar, sigue asi.</p>
+                        </div>
+                </div>
                 <table align="center" frame="box" rules="alls" border="1" cellspacing="0" cellpadding="2" class="tablaSopa" style="z-index:2;">
                     {% set sopa = alphabetSoup %}
                     {% for row in alphabetSoup %}
@@ -22,15 +30,26 @@
                 </table>
         </div>
         <div class="col-4">
+                <div class="row">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alert-fail" style="display:none">
+                                Has perdido, se guardará tu resultado, pero puedes volver a intentarlo
+                        </div>
+                </div>
                 <ul class="list-group">
                         {% for list in alphabetSoupFromVideo.words %}
                                 <li class="list-group-item " id="list_{{ list }}">{{ list }}</li>
                         {% endfor %}
                 </ul>
-                
+                <div class="mb-3 row">
+                        <label for="staticFail" class="col-sm-2 col-form-label">Posibles fallas</label>
+                        <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="staticFail" value="4">
+                        </div>
+                </div>
         </div>
 </div>
 <script language="JavaScript" type="text/javascript">
+
         var sopa = new Array();
 
     {% for row in alphabetSoup %}
@@ -48,6 +67,6 @@
 </script>
 <form name="formulario">
         <center>
-                <input type="button" value="Limpiar Sopa" onClick="borrar({{ alphabetSoupFromVideo.rows }}, {{ alphabetSoupFromVideo.columnSoup }});" />
+                <input type="button" value="Limpiar Sopa"  onClick="borrar({{ alphabetSoupFromVideo.rows }}, {{ alphabetSoupFromVideo.columnSoup }});" id="btn-limpiar" style="display:none;" />
         </center>
 </form>
