@@ -43,6 +43,9 @@ class Video
     #[ORM\OneToMany(mappedBy: 'video', targetEntity: AlphabetSoup::class)]
     private Collection $alphabetSoups;
 
+    #[ORM\ManyToOne(inversedBy: 'video')]
+    private ?Hangman $hangman = null;
+
 
     public function __construct()
     {
@@ -214,6 +217,18 @@ class Video
                 $alphabetSoup->setVideo(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getHangman(): ?Hangman
+    {
+        return $this->hangman;
+    }
+
+    public function setHangman(?Hangman $hangman): static
+    {
+        $this->hangman = $hangman;
 
         return $this;
     }
