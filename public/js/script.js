@@ -10,7 +10,7 @@
 var winOrLose = false;
 
 $(".letter").click(function(){
-	alert('aca');
+
 $.ajax({
 	data: {letter: $(this).text(), action: 2},
 	type: "POST",
