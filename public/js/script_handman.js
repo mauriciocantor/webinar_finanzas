@@ -23,7 +23,7 @@ $(".letter").click(function(){
 	let guessedWord = '';
 	//foundLetters = foundLetters.split('');
 	if(!winOrLose)
-	{
+	{console.log(live);
 		if(word.toLowerCase().indexOf(letter) !== -1)
 		{
 			for (let i = 0; i < wordLetters.length; i++) {

@@ -29,20 +29,20 @@
     <div class="clear"></div>
 </div>
 
-<script src="{{ asset('js/jquery-2.1.3.min.js') }}"></script>
+{#<script src="{{ asset('js/jquery-2.1.3.min.js') }}"></script>#}
 <script type="application/javascript">
 
-    let words = '{{ video.hangman.dictionary|join(',') }}';
+    var words = '{{ video.hangman.dictionary|join(',') }}';
         words = words.split(',');
         words = words[Math.round(Math.random()*((words.length - 1))+parseInt(0))];
 
     localStorage.setItem('words', words);
     localStorage.setItem('foundLetters','');
 
-    let blankWord =  '';
+    var blankWord =  '';
 
-    let live = {{ video.hangman.attempt }}
-    let imagen = 0;
+    var live = {{ video.hangman.attempt }}
+    var imagen = 0;
 
     for(let i = 0; i < words.length; i++)
     {
