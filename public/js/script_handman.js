@@ -1,15 +1,7 @@
-// var boo_audio = document.createElement("audio");
-// boo_audio.setAttribute("src", "sounds/boo.mp3");
-//
-// var applause_audio = document.createElement("audio");
-// applause_audio.setAttribute("src", "sounds/applause.mp3");
-//
-// var blop_audio = document.createElement("audio");
-// blop_audio.setAttribute("src", "sounds/blop.mp3");
 var winOrLose = false;
 let foundLetters = localStorage.getItem('foundLetters');
-let word = localStorage.getItem('words');
-let foundWord = new Array(word.length);
+let wordHangman = localStorage.getItem('words');
+let foundWord = new Array(wordHangman.length);
 
 $(".letter").click(function(){
 
@@ -19,15 +11,14 @@ $(".letter").click(function(){
 	let response = [];
 
 	letter = letter.toLowerCase();
-	let wordLetters = word.split('');
+	let wordLetters = wordHangman.split('');
 	let guessedWord = '';
 	//foundLetters = foundLetters.split('');
 	if(!winOrLose)
-	{console.log(live);
-		if(word.toLowerCase().indexOf(letter) !== -1)
+	{
+		if(wordHangman.toLowerCase().indexOf(letter) !== -1)
 		{
 			for (let i = 0; i < wordLetters.length; i++) {
-				console.log(foundWord[i]);
 				if(
 					wordLetters[i]===letter &&
 					(typeof foundWord[i] == 'undefined' || foundWord[i].indexOf('guessed-letter') > -1)
@@ -43,6 +34,11 @@ $(".letter").click(function(){
 
 			if(filterWord.length === 0){
 				winOrLose=true;
+				$('#result_finish-hangman').css('display','block');
+				$.post({
+					'url':urlHangman,
+					'data': {result:true, text:wordHangman}
+				});
 			}
 
 		}else{
@@ -54,7 +50,13 @@ $(".letter").click(function(){
 			if(live === 0)
 			{
 				winOrLose = false;
-				foundWord = ['La palabra era: <b>' + word + '</b>'];
+				foundWord = ['La palabra era: <b>' + wordHangman + '</b>'];
+				$('#result_finish-hangman').css('display','block');
+				$.post({
+					'url':urlHangman,
+					'data': {result:false, text:wordHangman}
+				});
+
 			}else{
 				for (let i = 0; i < wordLetters.length; i++) {
 					if ((typeof foundWord[i] == 'undefined' || foundWord[i].indexOf('guessed-letter') > -1)) {
@@ -66,31 +68,11 @@ $(".letter").click(function(){
 		$(this).addClass("display-none");
 	}
 
-	/*for (const wordLetter of wordLetters) {
-		let found = false;
-
-		for (const foundLetter of foundLetters) {
-			if(foundLetter.toLowerCase() === wordLetter.toLowerCase()){
-				found=true;
-				break;
-			}
-		}
-
-		if(found) {
-			guessedWord = guessedWord.concat(letter);
-			console.log(guessedWord);
-			//guessedWord = guessedWord.join();
-		}else if(letter != ' ') {
-			guessedWord += '<span class="guessed-letter">_</span>';
-		}else {
-			guessedWord += ' ';
-		}
-	}*/
-
 	guessedWord = foundWord.join("");
 	response['win'] = winOrLose;
 	//response['lives'] = $_SESSION['lives'];
 	response['guessedWord'] = guessedWord;
 	$('#guessed-word-div').html(guessedWord);
+
 
 }); 

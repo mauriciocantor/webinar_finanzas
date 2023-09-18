@@ -1,6 +1,9 @@
 
 <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
 <div id="hangman-div2">
+    <div class="finish" style="width: 100%; background: rgba(123,123,123,0.8); position: absolute;z-index: 900; display: none; text-align: center; padding-top: 25%" id="result_finish-hangman">
+        <h1>Finalizado</h1>
+    </div>
     <div>
         Selecciona una letra:
         <div id="letters">
@@ -31,12 +34,11 @@
 
 {#<script src="{{ asset('js/jquery-2.1.3.min.js') }}"></script>#}
 <script type="application/javascript">
+    var wordsToFind = '{{ video.hangman.dictionary|join(',') }}';
+        wordsToFind = wordsToFind.split(',');
+        wordsToFind = wordsToFind[Math.round(Math.random()*((wordsToFind.length - 1))+parseInt(0))];
 
-    var words = '{{ video.hangman.dictionary|join(',') }}';
-        words = words.split(',');
-        words = words[Math.round(Math.random()*((words.length - 1))+parseInt(0))];
-
-    localStorage.setItem('words', words);
+    localStorage.setItem('words', wordsToFind);
     localStorage.setItem('foundLetters','');
 
     var blankWord =  '';
@@ -44,11 +46,12 @@
     var live = {{ video.hangman.attempt }}
     var imagen = 0;
 
-    for(let i = 0; i < words.length; i++)
+    for(let i = 0; i < wordsToFind.length; i++)
     {
-        blankWord += words.slice(i,1) != ' ' ? '<span class="guessed-letter">_</span>' : ' ';
+        blankWord += wordsToFind.slice(i,1) != ' ' ? '<span class="guessed-letter">_</span>' : ' ';
     }
     $('#guessed-word-div').html(blankWord);
+    var urlHangman = "{{ url('app_hangman',{video:video.id}) }}";
 
 </script>
 <script src="{{ asset('js/script_handman.js') }}"></script>

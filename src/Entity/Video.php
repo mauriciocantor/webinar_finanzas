@@ -46,12 +46,16 @@ class Video
     #[ORM\ManyToOne(inversedBy: 'video')]
     private ?Hangman $hangman = null;
 
+    #[ORM\OneToMany(mappedBy: 'video', targetEntity: HangmanResult::class)]
+    private Collection $hangmanResults;
+
 
     public function __construct()
     {
         $this->videoUsers = new ArrayCollection();
         $this->questions = new ArrayCollection();
         $this->alphabetSoups = new ArrayCollection();
+        $this->hangmanResults = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -229,6 +233,36 @@ class Video
     public function setHangman(?Hangman $hangman): static
     {
         $this->hangman = $hangman;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, HangmanResult>
+     */
+    public function getHangmanResults(): Collection
+    {
+        return $this->hangmanResults;
+    }
+
+    public function addHangmanResult(HangmanResult $hangmanResult): static
+    {
+        if (!$this->hangmanResults->contains($hangmanResult)) {
+            $this->hangmanResults->add($hangmanResult);
+            $hangmanResult->setVideo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHangmanResult(HangmanResult $hangmanResult): static
+    {
+        if ($this->hangmanResults->removeElement($hangmanResult)) {
+            // set the owning side to null (unless already changed)
+            if ($hangmanResult->getVideo() === $this) {
+                $hangmanResult->setVideo(null);
+            }
+        }
 
         return $this;
     }

@@ -37,10 +37,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserAnswer::class)]
     private Collection $userAnswers;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: HangmanResult::class)]
+    private Collection $hangmanResults;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: AlphabetSoupResult::class)]
+    private Collection $alphabetSoupResults;
+
     public function __construct()
     {
         $this->videoUsers = new ArrayCollection();
         $this->userAnswers = new ArrayCollection();
+        $this->hangmanResults = new ArrayCollection();
+        $this->alphabetSoupResults = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -167,6 +175,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($userAnswer->getUser() === $this) {
                 $userAnswer->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, HangmanResult>
+     */
+    public function getHangmanResults(): Collection
+    {
+        return $this->hangmanResults;
+    }
+
+    public function addHangmanResult(HangmanResult $hangmanResult): static
+    {
+        if (!$this->hangmanResults->contains($hangmanResult)) {
+            $this->hangmanResults->add($hangmanResult);
+            $hangmanResult->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHangmanResult(HangmanResult $hangmanResult): static
+    {
+        if ($this->hangmanResults->removeElement($hangmanResult)) {
+            // set the owning side to null (unless already changed)
+            if ($hangmanResult->getUser() === $this) {
+                $hangmanResult->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AlphabetSoupResult>
+     */
+    public function getAlphabetSoupResults(): Collection
+    {
+        return $this->alphabetSoupResults;
+    }
+
+    public function addAlphabetSoupResult(AlphabetSoupResult $alphabetSoupResult): static
+    {
+        if (!$this->alphabetSoupResults->contains($alphabetSoupResult)) {
+            $this->alphabetSoupResults->add($alphabetSoupResult);
+            $alphabetSoupResult->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAlphabetSoupResult(AlphabetSoupResult $alphabetSoupResult): static
+    {
+        if ($this->alphabetSoupResults->removeElement($alphabetSoupResult)) {
+            // set the owning side to null (unless already changed)
+            if ($alphabetSoupResult->getUser() === $this) {
+                $alphabetSoupResult->setUser(null);
             }
         }
 

@@ -1,5 +1,8 @@
 <script type="text/javascript" language="javascript" src="{{ asset('js/funSopa.js') }}"></script>
 <div class="row">
+        <div class="finish" style="width: 100%; background: rgba(123,123,123,0.8); position: absolute;z-index: 900; display: none; text-align: center; padding-top: 25%" id="result_finish_soup">
+                <h1>Finalizado</h1>
+        </div>
         <div class="col-8" >
                 <div class="row">
                         <div class="alert alert-success alert-dismissible fade" role="alert" id="alert-success"  style="display:none;" >
@@ -64,6 +67,7 @@
     filas = {{ alphabetSoupFromVideo.rows }};
     columnas = {{ alphabetSoupFromVideo.columnSoup }};
     originWords = "{{ alphabetSoupFromVideo.words|join(',') }}";
+    var urlSave = "{{ url('app_alphabet_soup', {'alphabetSoup': alphabetSoupFromVideo.id }) }}"
 </script>
 <form name="formulario">
         <center>

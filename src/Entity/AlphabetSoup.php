@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AlphabetSoupRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -35,6 +37,14 @@ class AlphabetSoup
     #[ORM\ManyToOne(inversedBy: 'alphabetSoups')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Video $video = null;
+
+    #[ORM\OneToMany(mappedBy: 'ManyToOne', targetEntity: AlphabetSoupResult::class)]
+    private Collection $alphabetSoupResults;
+
+    public function __construct()
+    {
+        $this->alphabetSoupResults = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -121,6 +131,36 @@ class AlphabetSoup
     public function setVideo(?Video $video): static
     {
         $this->video = $video;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AlphabetSoupResult>
+     */
+    public function getAlphabetSoupResults(): Collection
+    {
+        return $this->alphabetSoupResults;
+    }
+
+    public function addAlphabetSoupResult(AlphabetSoupResult $alphabetSoupResult): static
+    {
+        if (!$this->alphabetSoupResults->contains($alphabetSoupResult)) {
+            $this->alphabetSoupResults->add($alphabetSoupResult);
+            $alphabetSoupResult->setAlphabetSoup($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAlphabetSoupResult(AlphabetSoupResult $alphabetSoupResult): static
+    {
+        if ($this->alphabetSoupResults->removeElement($alphabetSoupResult)) {
+            // set the owning side to null (unless already changed)
+            if ($alphabetSoupResult->getAlphabetSoup() === $this) {
+                $alphabetSoupResult->setAlphabetSoup(null);
+            }
+        }
 
         return $this;
     }

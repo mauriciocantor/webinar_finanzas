@@ -43,6 +43,7 @@
             <hr>
         {% endfor %}
         {{ include('question/alphabet_soup.html.twig',{'alphabetSoup': alphabetSoup, 'alphabetSoupFromVideo':alphabetSoupFromVideo}) }}
+        <hr>
         {{ include('question/hangman.html.twig',{'video': video}) }}
     </div>
 {% endblock %}

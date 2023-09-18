@@ -1,6 +1,7 @@
 var NS7=(document.getElementById && !document.all)?1:0;
-var word = [];
+var wordSoup = [];
 var max = 4;
+var foundWordAlphabet = [];
 
 function ReconoceCapas(capitas){//alert(capitas);
      var cadena="";
@@ -53,10 +54,7 @@ function marcarSopa(fila,columna){
   if (estadoSopa == 0){
 
 	var campoFormulario = "coordenadas"+numSeccion+"_"+numLetra;
-	  // word.push($("#letra"+numSeccion+"_"+fila+"_"+columna).text());
 
-	//if (getValue(nombreFormulario,campoFormulario)!='')
-	//	borrarSopa(getValue(nombreFormulario,campoFormulario),numSeccion);
 	eval("letra"+numSeccion+"_"+fila+"_"+columna+".style.background = '"+colorActual+"';");
 	estadoSopa = 1;
 	laCoordenadaX = fila;
@@ -73,7 +71,7 @@ function marcarSopa(fila,columna){
 	    sentido   = 'D';
         for (var f=laCoordenadaX, c=laCoordenadaY, z=0;c<=columna;f++,c++,z++){
 			eval("letra"+numSeccion+"_"+f+"_"+c+".style.background = '"+colorActual+"';");
-			word.push($("#letra"+numSeccion+"_"+f+"_"+c).text());
+			wordSoup.push($("#letra"+numSeccion+"_"+f+"_"+c).text());
 			valor+=eval("sopa"+numSeccion)[f][c];
 		}
 	}
@@ -85,7 +83,7 @@ function marcarSopa(fila,columna){
         for (var f=laCoordenadaX, c=laCoordenadaY, z=0;f<=fila;f++,z++){
 			eval("letra"+numSeccion+"_"+f+"_"+c+".style.background = '"+colorActual+"';");
 			valor+=eval("sopa"+numSeccion)[f][c];
-			word.push($("#letra"+numSeccion+"_"+f+"_"+c).text());
+			wordSoup.push($("#letra"+numSeccion+"_"+f+"_"+c).text());
 		}
 	}
 
@@ -96,7 +94,7 @@ function marcarSopa(fila,columna){
         for (var f=laCoordenadaX, c=laCoordenadaY, z=0;c>=columna;f++,c--,z++){
 			eval("letra"+numSeccion+"_"+f+"_"+c+".style.background = '"+colorActual+"';");
 			valor+=eval("sopa"+numSeccion)[f][c];
-			word.push($("#letra"+numSeccion+"_"+f+"_"+c).text());
+			wordSoup.push($("#letra"+numSeccion+"_"+f+"_"+c).text());
 		}
 	}
 
@@ -108,7 +106,7 @@ function marcarSopa(fila,columna){
 			console.log("sopa"+numSeccion);
 			eval("letra"+numSeccion+"_"+f+"_"+c+".style.background = '"+colorActual+"';");
 			valor+=eval("sopa"+numSeccion)[f][c];
-			word.push($("#letra"+numSeccion+"_"+f+"_"+c).text());
+			wordSoup.push($("#letra"+numSeccion+"_"+f+"_"+c).text());
 		}
 	}
 
@@ -119,7 +117,7 @@ function marcarSopa(fila,columna){
         for (var f=laCoordenadaX, c=laCoordenadaY, z=0;c>=columna;f--,c--,z++){
 			eval("letra"+numSeccion+"_"+f+"_"+c+".style.background = '"+colorActual+"';");
 			valor+=eval("sopa"+numSeccion)[f][c];
-			word.push($("#letra"+numSeccion+"_"+f+"_"+c).text());
+			wordSoup.push($("#letra"+numSeccion+"_"+f+"_"+c).text());
 		}
 	}
 
@@ -130,7 +128,7 @@ function marcarSopa(fila,columna){
         for (var f=laCoordenadaX, c=laCoordenadaY, z=0;f>=fila;f--,z++){
 			eval("letra"+numSeccion+"_"+f+"_"+c+".style.background = '"+colorActual+"';");
 			valor+=eval("sopa"+numSeccion)[f][c];
-			word.push($("#letra"+numSeccion+"_"+f+"_"+c).text());
+			wordSoup.push($("#letra"+numSeccion+"_"+f+"_"+c).text());
 		}
 	}
 
@@ -141,7 +139,7 @@ function marcarSopa(fila,columna){
         for (var f=laCoordenadaX, c=laCoordenadaY, z=0;c<=columna;c++,f--,z++){
 			eval("letra"+numSeccion+"_"+f+"_"+c+".style.background = '"+colorActual+"';");
 			valor+=eval("sopa"+numSeccion)[f][c];
-			word.push($("#letra"+numSeccion+"_"+f+"_"+c).text());
+			wordSoup.push($("#letra"+numSeccion+"_"+f+"_"+c).text());
 
 		}
 	}
@@ -153,11 +151,11 @@ function marcarSopa(fila,columna){
         for (var f=laCoordenadaX, c=laCoordenadaY, z=0;c<=columna;c++,z++){
 			eval("letra"+numSeccion+"_"+f+"_"+c+".style.background = '"+colorActual+"';");
 			valor+=eval("sopa"+numSeccion)[f][c];
-			word.push($("#letra"+numSeccion+"_"+f+"_"+c).text());
+			wordSoup.push($("#letra"+numSeccion+"_"+f+"_"+c).text());
 		}
 	}
 
-  	idList = word.join('');
+  	idList = wordSoup.join('');
 	if(typeof originWords == 'string') {
 		originWords = originWords.split(',');
 	}
@@ -166,33 +164,36 @@ function marcarSopa(fila,columna){
 		$('#staticFail').val(max);
 		if(max<=0){
 			$('#alert-fail').attr('style','display:block');
-			$('#btn-limpiar').attr('style','display:block');
+			//$('#btn-limpiar').attr('style','display:block');
+			$.post({
+				'url':urlSave,
+				'data': {live:max, foundWord:foundWordAlphabet, isCorrect:false}
+			});
 		}
   	}else{
-		  console.log(typeof originWords, originWords);
+
 		originWords.splice(originWords.indexOf(idList),1);
+		foundWordAlphabet.push(idList);
 		if(originWords.length<=0){
 			$('#alert-success').addClass('show');
 			$('#alert-success').attr('style','display:block');
+			$.post({
+				'url':urlSave,
+				'data': {live:max, foundWord:foundWordAlphabet, isCorrect:true}
+			});
 		}
 	}
 	estadoSopa = 0;
 	colorActual = generaColor();
 
-  	word = [];
+  	wordSoup = [];
 
 	  $('#list_'+idList).addClass('active');
 	var campoFormulario = "palabra"+numSeccion+"_"+numLetra;
-	//setValue(nombreFormulario,campoFormulario,valor);
-	
+
 	campoFormulario = "coordenadas"+numSeccion+"_"+numLetra;
-	//var valor = getValue(nombreFormulario,campoFormulario);
-	//valor = implode(";",new Array(valor,implode(",",new Array(fila,columna))));
-	//setValue(nombreFormulario,campoFormulario,valor);
 
    }// fin else
-
-
 }//marcarSopa
 
 
