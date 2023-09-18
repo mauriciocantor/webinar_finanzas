@@ -49,6 +49,9 @@ class Video
     #[ORM\OneToMany(mappedBy: 'video', targetEntity: HangmanResult::class)]
     private Collection $hangmanResults;
 
+    #[ORM\Column(nullable: true)]
+    private ?array $roleTest = null;
+
 
     public function __construct()
     {
@@ -263,6 +266,18 @@ class Video
                 $hangmanResult->setVideo(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRoleTest(): ?array
+    {
+        return $this->roleTest;
+    }
+
+    public function setRoleTest(?array $roleTest): static
+    {
+        $this->roleTest = $roleTest;
 
         return $this;
     }

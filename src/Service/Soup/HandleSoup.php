@@ -34,6 +34,7 @@ class HandleSoup
         $alphabetSoup->setIsCorrect(($datos['isCorrect']==='true'));
         $alphabetSoup->setLive($datos['live']);
         $alphabetSoup->setFoundWord($datos['foundWord']);
+        $alphabetSoup->setDateResult(new \DateTime());
 
         $this->entityManager->persist($alphabetSoup);
         $this->entityManager->flush($alphabetSoup);

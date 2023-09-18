@@ -1,10 +1,34 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="align-content-center">
+    <div class="align-content-center mb-1">
         <div id="player" class="justify-content-center"></div>
     </div>
-    <div class="modal fade in" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+    <div class="btn-group" role="group" aria-label="Button group with nested dropdown" id="take_test" style="display: none;">
+        <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            Realizar prueba
+        </a>
+    </div>
+
+    <div class="align-content-center">
+
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body" id="body-question">
+                Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+            </div>
+        </div>
+
+    </div>
+    <div class="collapse" id="collapseTest">
+        <div class="card card-body" id="body-question">
+
+        </div>
+    </div>
+    <script>
+        let withTest = "{{ withTest }}";
+    </script>
+    {#<div class="modal fade in" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" style="max-width: 100% !important;">
             <div class="modal-content">
                 <div class="modal-header">
@@ -22,7 +46,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>#}
 {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
@@ -88,11 +112,15 @@
             };
 
             if(event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED /*&& ((currentTime / totalTime) > 0.98)*/){
-                $.get("{{ path('app_question', {'video':video.id}) }}",
-                    function (response){
-                        $('#body-question').html(response);
-                        $('#staticBackdrop').modal('show');
-                    })
+                if(withTest) {
+                    $.get("{{ path('app_question', {'video':video.id}) }}",
+                        function (response) {
+                            $('#body-question').html(response);
+                            $('#staticBackdrop').modal('show');
+                        });
+
+                    $('#take_test').css('display','block');
+                }
                 $.post("{{ url('app_video_save_video_by_user') }}", {
                     data:{video},
                     dataType: "json",

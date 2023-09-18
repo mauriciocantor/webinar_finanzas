@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\AlphabetSoupResultRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AlphabetSoupResultRepository::class)]
@@ -29,6 +30,9 @@ class AlphabetSoupResult
     #[ORM\ManyToOne(inversedBy: 'alphabetSoupResults')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateResult = null;
 
     public function getId(): ?int
     {
@@ -91,6 +95,18 @@ class AlphabetSoupResult
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getDateResult(): ?\DateTimeInterface
+    {
+        return $this->dateResult;
+    }
+
+    public function setDateResult(?\DateTimeInterface $dateResult): static
+    {
+        $this->dateResult = $dateResult;
 
         return $this;
     }

@@ -31,8 +31,11 @@ class QuestionController extends AbstractController
     #[Route('/question/{video}', name: 'app_question')]
     public function index(Video $video): Response
     {
+        $alphabetSoup=null;
         $alphabetSoupFromVideo = $video->getAlphabetSoups()->first();
-        $alphabetSoup = $this->handleSoup->getAlphabetSoup($alphabetSoupFromVideo);
+        if($alphabetSoupFromVideo) {
+            $alphabetSoup = $this->handleSoup->getAlphabetSoup($alphabetSoupFromVideo);
+        }
         $video = $this->questionService->getQuestionByVideo($video);
         return $this->render('question/index.html.twig', [
             'video' => $video,

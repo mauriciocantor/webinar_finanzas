@@ -55,11 +55,14 @@ class VideoController extends AbstractController
             return $this->redirectToRoute('_preview_error',["code"=>403]);
         }
 
+        $videos = $this->videoServices->getRoleFromTestAvailable($videos, $this->security->getUser()->getRoles());
+
         $videoUser = $this->saveVideo->getVideoByUser($this->security->getUser(),$video);
 
         return $this->render('video/learning.html.twig',[
             'video'     => $video,
-            'videoUser' => $videoUser
+            'videoUser' => $videoUser,
+            'withTest' => (count($videos)>0)
         ]);
     }
 
