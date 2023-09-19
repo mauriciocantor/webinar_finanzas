@@ -52,6 +52,9 @@ class Video
     #[ORM\Column(nullable: true)]
     private ?array $roleTest = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $orderVideo = null;
+
 
     public function __construct()
     {
@@ -278,6 +281,18 @@ class Video
     public function setRoleTest(?array $roleTest): static
     {
         $this->roleTest = $roleTest;
+
+        return $this;
+    }
+
+    public function getOrderVideo(): ?int
+    {
+        return $this->orderVideo;
+    }
+
+    public function setOrderVideo(?int $orderVideo): static
+    {
+        $this->orderVideo = $orderVideo;
 
         return $this;
     }

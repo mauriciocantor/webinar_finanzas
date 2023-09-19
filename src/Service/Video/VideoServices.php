@@ -19,16 +19,22 @@ class VideoServices
 
     public function getAllVideos(): array
     {
-        return $this->entityManager->getRepository(Video::class)->findAll();
+        $repository = $this->entityManager->getRepository(Video::class);
+
+        $query = $repository->createQueryBuilder('v')
+            ->orderBy('v.orderVideo')
+            ->getQuery();
+
+        return $query->getResult();
+
     }
 
     public function getVideosByRole(array $role): array
     {
         $allVideos = $this->getAllVideos();
-        $videos = $this->getRoleAvailable($allVideos, $role);
-        sort($videos);
+        //sort($videos);
 
-        return $videos;
+        return $this->getRoleAvailable($allVideos, $role);
     }
 
     /**

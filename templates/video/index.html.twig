@@ -16,7 +16,7 @@
                                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" frameborder="0" allowfullscreen></iframe>#}
                                 </div>
                                 <div class="fh5co_hover_news_img_video_tag_position_absolute fh5co_hide_{{ loop.index }}">
-                                    <img src="images/ariel-lustre-208615.jpg" alt=""/>
+                                    <img src="{{ asset('images/thumbnail/'~ video.thumbnail ) }}" alt=""/>
                                 </div>
                                 <div class="fh5co_hover_news_img_video_tag_position_absolute_1 fh5co_hide" id="play-video_{{ loop.index }}" onclick="goto({{ video.id }})">
                                     <div class="fh5co_hover_news_img_video_tag_position_absolute_1_play_button_1">
