@@ -2,6 +2,7 @@
 
 namespace App\Service\Video;
 
+use App\Entity\User;
 use App\Entity\Video;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -61,5 +62,12 @@ class VideoServices
             $diff = array_intersect_assoc($video->getRoleTest(), $role);
             return count($diff) > 0;
         });
+    }
+
+    public function getTestPassed(array $videos, User $user){
+        array_walk($videos, function(Video $video) use ($user){
+            $result = $video->getHangmanResultByUser($user);
+
+        });die;
     }
 }

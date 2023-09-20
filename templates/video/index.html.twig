@@ -32,6 +32,11 @@
 {#                                <div class="c_g"><i class="fa fa-clock-o"></i> Oct 16,2017</div>#}
                             </div>
                         </div>
+                        {% set resultTest = video.getHangmanResultByUser(app.user) %}
+                        {% if resultTest['alphabetSoup']|length > 0 or
+                            resultTest['hangmanResult']|length > 0 %}
+                            <div class="p-3 mb-2 bg-success text-white">Prueba ya presentada</div>
+                        {% endif %}
                     </div>
                     {% endfor %}
                 </div>

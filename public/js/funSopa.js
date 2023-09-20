@@ -189,6 +189,8 @@ function marcarSopa(fila,columna){
   	wordSoup = [];
 
 	  $('#list_'+idList).addClass('active');
+	  $('#list_'+idList+'_word').css('display','block');
+
 	var campoFormulario = "palabra"+numSeccion+"_"+numLetra;
 
 	campoFormulario = "coordenadas"+numSeccion+"_"+numLetra;

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Video;
 use App\Service\Video\SaveVideo;
 use App\Service\Video\VideoServices;
+use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,6 +41,8 @@ class VideoController extends AbstractController
             $this->security->getUser()->getRoles()
         );
 
+        //$videos = $this->videoServices->getTestPassed($videos,$this->security->getUser());
+
         return $this->render('video/index.html.twig', [
             'videos' => $videos,
         ]);
@@ -55,14 +58,20 @@ class VideoController extends AbstractController
             return $this->redirectToRoute('_preview_error',["code"=>403]);
         }
 
+        $indexItem = array_search($video, $videos, true);
+        $playList = [
+            'before'=> $videos[$indexItem-1] ?? null,
+            'after'=> $videos[$indexItem+1] ?? null,
+        ];
+
         $videos = $this->videoServices->getRoleFromTestAvailable($videos, $this->security->getUser()->getRoles());
 
         $videoUser = $this->saveVideo->getVideoByUser($this->security->getUser(),$video);
-
         return $this->render('video/learning.html.twig',[
             'video'     => $video,
             'videoUser' => $videoUser,
-            'withTest' => (count($videos)>0)
+            'withTest' => (count($videos)>0),
+            'playList' => $playList
         ]);
     }
 

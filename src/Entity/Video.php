@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\VideoRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ReadableCollection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -297,4 +298,22 @@ class Video
         return $this;
     }
 
+    /**
+     * @param User $user
+     * @return array
+     */
+    public function getHangmanResultByUser(User $user): array
+    {
+        $hangmanResult =  $this->getHangmanResults()->filter(function (HangmanResult $hangmanResult) use ($user){
+            return $hangmanResult->getUser() === $user;
+        });
+
+        $alphabetSoup = $this->alphabetSoups->filter(function (AlphabetSoup $alphabetSoup) use ($user){
+            return count($alphabetSoup->getAlphabetSoupResults()->filter(function (AlphabetSoupResult $alphabetSoupResult) use ($user) {
+                return $alphabetSoupResult->getUser() === $user;
+            })) > 0;
+        });
+
+        return ['alphabetSoup'=>$alphabetSoup, 'hangmanResult' => $hangmanResult];
+    }
 }

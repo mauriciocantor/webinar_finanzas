@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\HangmanRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: HangmanRepository::class)]
@@ -23,6 +24,9 @@ class Hangman
 
     #[ORM\OneToMany(mappedBy: 'hangman', targetEntity: Video::class)]
     private Collection $video;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $question = null;
 
     public function __construct()
     {
@@ -84,6 +88,18 @@ class Hangman
                 $video->setHangman(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getQuestion(): ?string
+    {
+        return $this->question;
+    }
+
+    public function setQuestion(?string $question): static
+    {
+        $this->question = $question;
 
         return $this;
     }

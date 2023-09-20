@@ -4,13 +4,32 @@
     <div class="align-content-center mb-1">
         <div id="player" class="justify-content-center"></div>
     </div>
-
-    <div class="btn-group" role="group" aria-label="Button group with nested dropdown" id="take_test" style="display: none;">
-        <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-            Realizar prueba
-        </a>
+    <div class="row">
+        <div class="col-6">
+            <div class="btn-group" role="group" aria-label="Button group with nested dropdown" id="take_test" style="display: none;">
+                <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" id="goto-test">
+                    Realizar prueba
+                </a>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="position-relative" id="body-playlist" style="display: none;">
+                <p class="position-relative text-center">
+                    Videos por ver:
+                </p>
+                <div class="btn-group position-relative top-0 start-50 translate-middle" role="group" aria-label="Basic mixed styles example">
+                    {% if playList['before'] %}
+                        {% set idBefore = playList['before'].id %}
+                        <a type="button" class="btn btn-danger" href="{{ url('learning_video', {'video':idBefore} ) }}"><< Anterior</a>
+                    {% endif %}
+                    {% if playList['after'] %}
+                        {% set idAfter = playList['after'].id %}
+                        <a type="button" class="btn btn-success" href="{{ url('learning_video', {"video":idAfter} ) }}">Siguiente >></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
-
     <div class="align-content-center">
 
         <div class="collapse" id="collapseExample">
@@ -28,25 +47,6 @@
     <script>
         let withTest = "{{ withTest }}";
     </script>
-    {#<div class="modal fade in" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" style="max-width: 100% !important;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Realiza la prueba</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="body-question">
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Understood</button>
-                </div>
-            </div>
-        </div>
-    </div>#}
 {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
@@ -111,16 +111,17 @@
                 'video': "{{ video.id }}"
             };
 
-            if(event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED /*&& ((currentTime / totalTime) > 0.98)*/){
+            if(event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED && ((currentTime / totalTime) > 0.98)){
                 if(withTest) {
                     $.get("{{ path('app_question', {'video':video.id}) }}",
                         function (response) {
                             $('#body-question').html(response);
                             $('#staticBackdrop').modal('show');
+                            $('#take_test').css('display','block');
+                            $('#body-playlist').css('display','block');
                         });
-
-                    $('#take_test').css('display','block');
                 }
+
                 $.post("{{ url('app_video_save_video_by_user') }}", {
                     data:{video},
                     dataType: "json",
@@ -131,14 +132,6 @@
 
             }
 
-            // console.log(formatTime(player.getCurrentTime()), formatTime(player.getDuration()));
-            // if(event.data == YT.PlayerState.ENDED){
-            //
-            // }
-            // if (event.data == YT.PlayerState.PLAYING && !done) {
-            //     // setTimeout(stopVideo, 6000);
-            //     done = true;
-            // }
         }
         function stopVideo() {
             player.stopVideo();
@@ -154,6 +147,10 @@
 
             return minutes + ":" + seconds;
         }
+
+        $('#goto-test').click(function (){
+            window.scrollTo(0,1000);
+        });
     </script>
 {% endblock %}
 

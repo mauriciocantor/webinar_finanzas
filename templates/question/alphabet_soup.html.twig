@@ -40,12 +40,12 @@
                 </div>
                 <ul class="list-group">
                         {% for list in alphabetSoupFromVideo.words %}
-                                <li class="list-group-item " id="list_{{ list }}">{{ list }}</li>
+                                <li class="list-group-item " id="list_{{ list }}">{{ alphabetSoupFromVideo.question[loop.index0] }} <strong class="bg-danger" id="list_{{ list }}_word" style="display: none;"> {{ list }}</strong> </li>
                         {% endfor %}
                 </ul>
                 <div class="mb-3 row">
-                        <label for="staticFail" class="col-sm-2 col-form-label">Posibles fallas</label>
-                        <div class="col-sm-10">
+                        <label for="staticFail" class="col-sm-6 col-form-label">Posibles fallas</label>
+                        <div class="col-sm-6">
                                 <input type="text" readonly class="form-control-plaintext" id="staticFail" value="4">
                         </div>
                 </div>

@@ -38,8 +38,11 @@ class AlphabetSoup
     #[ORM\JoinColumn(nullable: false)]
     private ?Video $video = null;
 
-    #[ORM\OneToMany(mappedBy: 'ManyToOne', targetEntity: AlphabetSoupResult::class)]
+    #[ORM\OneToMany(mappedBy: 'alphabetSoup', targetEntity: AlphabetSoupResult::class)]
     private Collection $alphabetSoupResults;
+
+    #[ORM\Column(nullable: true)]
+    private ?array $question = null;
 
     public function __construct()
     {
@@ -161,6 +164,18 @@ class AlphabetSoup
                 $alphabetSoupResult->setAlphabetSoup(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getQuestion(): ?array
+    {
+        return $this->question;
+    }
+
+    public function setQuestion(?array $question): static
+    {
+        $this->question = $question;
 
         return $this;
     }
