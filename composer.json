@@ -48,6 +48,7 @@
             "symfony/flex": true,
             "symfony/runtime": true
         },
+        "optimize-autoloader": true,
         "sort-packages": true
     },
     "autoload": {

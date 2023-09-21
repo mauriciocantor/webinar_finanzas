@@ -46,7 +46,7 @@ class VideoServices
     public function getRoleAvailable(array $allVideos, array $role): array
     {
         return array_filter($allVideos, static function (Video $video) use ($role) {
-            $diff = array_intersect_assoc($video->getAvailablesRoles(), $role);
+            $diff = array_intersect($video->getAvailablesRoles(), $role);
             return count($diff) > 0;
         });
     }
