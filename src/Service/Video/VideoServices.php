@@ -2,6 +2,7 @@
 
 namespace App\Service\Video;
 
+use App\Entity\ModuleVideo;
 use App\Entity\User;
 use App\Entity\Video;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,10 +21,10 @@ class VideoServices
 
     public function getAllVideos(): array
     {
-        $repository = $this->entityManager->getRepository(Video::class);
+        $repository = $this->entityManager->getRepository(ModuleVideo::class);
 
         $query = $repository->createQueryBuilder('v')
-            ->orderBy('v.orderVideo')
+//            ->orderBy('v.orderVideo')
             ->getQuery();
 
         return $query->getResult();
@@ -45,10 +46,14 @@ class VideoServices
      */
     public function getRoleAvailable(array $allVideos, array $role): array
     {
-        return array_filter($allVideos, static function (Video $video) use ($role) {
-            $diff = array_intersect($video->getAvailablesRoles(), $role);
-            return count($diff) > 0;
-        });
+        $result = array_map(function (ModuleVideo $module) use ($role){
+            $module->setVideos($module->getVideos()->filter(static function (Video $video) use ($role) {
+                $diff = array_intersect($video->getAvailablesRoles(), $role);
+                return count($diff) > 0;
+            }));
+            return $module;
+        }, $allVideos);
+        return $result;
     }
 
     /**
@@ -58,10 +63,14 @@ class VideoServices
      */
     public function getRoleFromTestAvailable(array $allVideos, array $role): array
     {
-        return array_filter($allVideos, static function (Video $video) use ($role) {
-            $diff = array_intersect_assoc($video->getRoleTest(), $role);
-            return count($diff) > 0;
-        });
+        $result = array_map(function (ModuleVideo $module) use ($role){
+            $module->setVideos($module->getVideos()->filter(static function (Video $video) use ($role) {
+                $diff = array_intersect($video->getRoleTest(), $role);
+                return count($diff) > 0;
+            }));
+            return $module;
+        }, $allVideos);
+        return $result;
     }
 
     public function getTestPassed(array $videos, User $user){

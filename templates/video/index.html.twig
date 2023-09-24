@@ -4,42 +4,62 @@
             <div>
                 <div class="fh5co_heading fh5co_heading_border_bottom pt-5 pb-2 mb-4">Aprendamos en Video</div>
             </div>
-            <div>
-                <div class="owl-carousel owl-theme" id="slider3">
-                    {% for video in videos %}
-                    <div class="item px-2">
-                        <div class="fh5co_hover_news_img">
-                            <div class="fh5co_hover_news_img_video_tag_position_relative">
-                                <div class="fh5co_news_img">
-                                    {#<iframe id="video_{{ loop.index }}" width="100%" height="200"
-                                            src="{{ video.link }}?autoplay=1&controls=0&disablekb=1&modestbranding=1&playsinline=1"
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" frameborder="0" allowfullscreen></iframe>#}
+            <div class="accordion" id="accordionFlushExample">
+                {% for module in videos %}
+                <div class="accordion-item">
+                    <h2 class="accordion-header bg-opacity-75" id="flush-heading{{ module.id }}">
+                        <button class="accordion-button bg-primary text-light collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{ module.id }}" aria-expanded="false" aria-controls="flush-collapse{{ module.id }}">
+                            {{ module.name }}
+                        </button>
+                    </h2>
+                    <div id="flush-collapse{{ module.id }}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{ module.id }}" data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">
+                            <div id="carouselExampleControls{{ module.id }}" class="carousel slide w-75 h-75 m-auto" data-bs-ride="carousel">
+                                <div class="carousel-indicators">
+                                    {% for video in module.videos %}
+                                        <button type="button" data-bs-target="#carouselExampleControls{{ module.id }}" data-bs-slide-to="{{ loop.index0 }}" class="{{ (loop.index0 == 1)?'active':''}} bg-danger" {% if loop.index0 == 1 %} aria-current="true" {% endif%} aria-label="Slide {{ loop.index0 }}"></button>
+                                    {% endfor %}
                                 </div>
-                                <div class="fh5co_hover_news_img_video_tag_position_absolute fh5co_hide_{{ loop.index }}">
-                                    <img src="{{ asset('images/thumbnail/'~ video.thumbnail ) }}" alt=""/>
-                                </div>
-                                <div class="fh5co_hover_news_img_video_tag_position_absolute_1 fh5co_hide" id="play-video_{{ loop.index }}" onclick="goto({{ video.id }})">
-                                    <div class="fh5co_hover_news_img_video_tag_position_absolute_1_play_button_1">
-                                        <div class="fh5co_hover_news_img_video_tag_position_absolute_1_play_button">
-                                            <span><i class="fa fa-play"></i></span>
+                                <div class="carousel-inner">
+                                    {% for video in module.videos %}
+                                        <div class="carousel-item {{ (loop.index0 == 1)?'active':''}}" onclick="goto({{ video.id }})">
+                                            <div class="">
+                                                <div class="text-center h-50">
+                                                    <img class="img-fluid d-block w-100" src="{{ asset('images/thumbnail/'~ video.thumbnail ) }}" alt=""/>
+                                                </div>
+                                                <div class="carousel-caption d-none d-md-block">
+                                                    {% set resultTest = video.getHangmanResultByUser(app.user) %}
+                                                    {% if resultTest['alphabetSoup']|length > 0 or
+                                                        resultTest['hangmanResult']|length > 0 %}
+                                                        <div class="p-3 mb-2 bg-success text-white">Prueba ya presentada</div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="fh5co_hover_news_img_video_tag_position_absolute_1" id="play-video_{{ loop.index }}" onclick="goto({{ video.id }})">
+                                                <div class="fh5co_hover_news_img_video_tag_position_absolute_1_play_button_1">
+                                                    <div class="fh5co_hover_news_img_video_tag_position_absolute_1_play_button">
+                                                        <span><i class="fa fa-play"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                    {% endfor %}
+                                    <button class="carousel-control-prev" type="button" style="background: rgba(0,0,0,0.7)" data-bs-target="#carouselExampleControls{{ module.id }}" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" style="background: rgba(0,0,0,0.7)" data-bs-target="#carouselExampleControls{{ module.id }}" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="pt-2">
-                                <a href="#" class="d-block fh5co_small_post_heading fh5co_small_post_heading_1">
-                                    <span class="">{{ video.description }} </span></a>
-{#                                <div class="c_g"><i class="fa fa-clock-o"></i> Oct 16,2017</div>#}
-                            </div>
+
                         </div>
-                        {% set resultTest = video.getHangmanResultByUser(app.user) %}
-                        {% if resultTest['alphabetSoup']|length > 0 or
-                            resultTest['hangmanResult']|length > 0 %}
-                            <div class="p-3 mb-2 bg-success text-white">Prueba ya presentada</div>
-                        {% endif %}
                     </div>
-                    {% endfor %}
                 </div>
+                {% endfor %}
+
             </div>
         </div>
     </div>

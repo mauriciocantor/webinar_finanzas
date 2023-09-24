@@ -56,6 +56,9 @@ class Video
     #[ORM\Column(nullable: true)]
     private ?int $orderVideo = null;
 
+    #[ORM\ManyToOne(inversedBy: 'videos')]
+    private ?ModuleVideo $module = null;
+
 
     public function __construct()
     {
@@ -315,5 +318,17 @@ class Video
         });
 
         return ['alphabetSoup'=>$alphabetSoup, 'hangmanResult' => $hangmanResult];
+    }
+
+    public function getModule(): ?ModuleVideo
+    {
+        return $this->module;
+    }
+
+    public function setModule(?ModuleVideo $module): static
+    {
+        $this->module = $module;
+
+        return $this;
     }
 }

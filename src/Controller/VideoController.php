@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\ModuleVideo;
 use App\Entity\Video;
 use App\Service\Video\SaveVideo;
 use App\Service\Video\VideoServices;
@@ -54,15 +55,20 @@ class VideoController extends AbstractController
         $videos = $this->videoServices->getVideosByRole(
             $this->security->getUser()->getRoles()
         );
-        if(!in_array($video,$videos)){
+
+        $validation=array_filter($videos, function (ModuleVideo $module) use ($video){
+            return in_array($video,$module->getVideos()->toArray());
+        });
+
+        if(count($validation)<=0){
             return $this->redirectToRoute('_preview_error',["code"=>403]);
         }
 
-        $indexItem = array_search($video, $videos, true);
+       /* $indexItem = array_search($video, $videos, true);
         $playList = [
             'before'=> $videos[$indexItem-1] ?? null,
             'after'=> $videos[$indexItem+1] ?? null,
-        ];
+        ];*/
 
         $videos = $this->videoServices->getRoleFromTestAvailable($videos, $this->security->getUser()->getRoles());
 
@@ -71,7 +77,7 @@ class VideoController extends AbstractController
             'video'     => $video,
             'videoUser' => $videoUser,
             'withTest' => (count($videos)>0),
-            'playList' => $playList
+//            'playList' => $playList
         ]);
     }
 
