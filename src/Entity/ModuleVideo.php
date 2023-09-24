@@ -29,6 +29,9 @@ class ModuleVideo
     #[ORM\OrderBy(["orderVideo"=>"ASC"])]
     private Collection $videos;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $thumbnail = null;
+
     public function __construct()
     {
         $this->videos = new ArrayCollection();
@@ -106,6 +109,18 @@ class ModuleVideo
                 $video->setModule(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getThumbnail(): ?string
+    {
+        return $this->thumbnail;
+    }
+
+    public function setThumbnail(?string $thumbnail): static
+    {
+        $this->thumbnail = $thumbnail;
 
         return $this;
     }

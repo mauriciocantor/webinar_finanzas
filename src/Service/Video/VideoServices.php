@@ -47,11 +47,7 @@ class VideoServices
     public function getRoleAvailable(array $allVideos, array $role): array
     {
         $result = array_map(function (ModuleVideo $module) use ($role){
-            $module->setVideos($module->getVideos()->filter(static function (Video $video) use ($role) {
-                $diff = array_intersect($video->getAvailablesRoles(), $role);
-                return count($diff) > 0;
-            }));
-            return $module;
+            return $this->getVideoFromModuleAndRole($module, $role);
         }, $allVideos);
         return $result;
     }
@@ -78,5 +74,20 @@ class VideoServices
             $result = $video->getHangmanResultByUser($user);
 
         });die;
+    }
+
+    /**
+     * @param mixed $module
+     * @param array $role
+     * @return void
+     */
+    public function getVideoFromModuleAndRole(mixed $module, array $role)
+    {
+
+         $module->setVideos($module->getVideos()->filter(static function (Video $video) use ($role) {
+            $diff = array_intersect($video->getAvailablesRoles(), $role);
+            return count($diff) > 0;
+        }));
+         return $module;
     }
 }

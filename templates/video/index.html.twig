@@ -1,67 +1,29 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <div class="container-fluid fh5co_video_news_bg pb-4">
-            <div>
-                <div class="fh5co_heading fh5co_heading_border_bottom pt-5 pb-2 mb-4">Aprendamos en Video</div>
-            </div>
-            <div class="accordion" id="accordionFlushExample">
-                {% for module in videos %}
-                <div class="accordion-item">
-                    <h2 class="accordion-header bg-opacity-75" id="flush-heading{{ module.id }}">
-                        <button class="accordion-button bg-primary text-light collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{ module.id }}" aria-expanded="false" aria-controls="flush-collapse{{ module.id }}">
-                            {{ module.name }}
-                        </button>
-                    </h2>
-                    <div id="flush-collapse{{ module.id }}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{ module.id }}" data-bs-parent="#accordionFlushExample">
-                        <div class="accordion-body">
-                            <div id="carouselExampleControls{{ module.id }}" class="carousel slide w-75 h-75 m-auto" data-bs-ride="carousel">
-                                <div class="carousel-indicators">
-                                    {% for video in module.videos %}
-                                        <button type="button" data-bs-target="#carouselExampleControls{{ module.id }}" data-bs-slide-to="{{ loop.index0 }}" class="{{ (loop.index0 == 1)?'active':''}} bg-danger" {% if loop.index0 == 1 %} aria-current="true" {% endif%} aria-label="Slide {{ loop.index0 }}"></button>
-                                    {% endfor %}
-                                </div>
-                                <div class="carousel-inner">
-                                    {% for video in module.videos %}
-                                        <div class="carousel-item {{ (loop.index0 == 1)?'active':''}}" onclick="goto({{ video.id }})">
-                                            <div class="">
-                                                <div class="text-center h-50">
-                                                    <img class="img-fluid d-block w-100" src="{{ asset('images/thumbnail/'~ video.thumbnail ) }}" alt=""/>
-                                                </div>
-                                                <div class="carousel-caption d-none d-md-block">
-                                                    {% set resultTest = video.getHangmanResultByUser(app.user) %}
-                                                    {% if resultTest['alphabetSoup']|length > 0 or
-                                                        resultTest['hangmanResult']|length > 0 %}
-                                                        <div class="p-3 mb-2 bg-success text-white">Prueba ya presentada</div>
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                            <div class="fh5co_hover_news_img_video_tag_position_absolute_1" id="play-video_{{ loop.index }}" onclick="goto({{ video.id }})">
-                                                <div class="fh5co_hover_news_img_video_tag_position_absolute_1_play_button_1">
-                                                    <div class="fh5co_hover_news_img_video_tag_position_absolute_1_play_button">
-                                                        <span><i class="fa fa-play"></i></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    {% endfor %}
-                                    <button class="carousel-control-prev" type="button" style="background: rgba(0,0,0,0.7)" data-bs-target="#carouselExampleControls{{ module.id }}" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Previous</span>
-                                    </button>
-                                    <button class="carousel-control-next" type="button" style="background: rgba(0,0,0,0.7)" data-bs-target="#carouselExampleControls{{ module.id }}" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Next</span>
-                                    </button>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-
-            </div>
+        <div>
+            <div class="fh5co_heading fh5co_heading_border_bottom pt-5 pb-2 mb-4">Aprendamos en Video</div>
         </div>
+        <ul class="nav flex-column">
+            {% for module in videos %}
+                <li class="nav-item">
+                    <div class="container_image">
+                        <a class="nav-link active" aria-current="page" href="{{ path('detail_module',{
+                            moduleVideo: module.id
+                        }) }}">
+
+                            <div class="item">
+                                <h2>{{ module.name }}</h2>
+                                <img src="{{ asset('images/thumbnail/week1.jpg') }}" class="img-fluid" alt="week_1">
+
+
+                            </div>
+                        </a>
+                    </div>
+                </li>
+            {% endfor %}
+
+        </ul>
     </div>
 {% endblock %}
 {% block javascripts %}

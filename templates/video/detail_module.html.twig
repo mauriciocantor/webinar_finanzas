@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="container-fluid fh5co_video_news_bg pb-4">
+        <div>
+            <div class="fh5co_heading fh5co_heading_border_bottom pt-5 pb-2 mb-4">Aprendamos en Video</div>
+        </div>
+        <div>
+            <div class="owl-carousel owl-theme" id="slider3">
+                {% for video in videos %}
+                    <div class="item px-2">
+                        <div class="fh5co_hover_news_img">
+                            <div class="fh5co_hover_news_img_video_tag_position_relative">
+                                <div class="fh5co_news_img">
+                                    {#<iframe id="video_{{ loop.index }}" width="100%" height="200"
+                                            src="{{ video.link }}?autoplay=1&controls=0&disablekb=1&modestbranding=1&playsinline=1"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" frameborder="0" allowfullscreen></iframe>#}
+                                </div>
+                                <div class="fh5co_hover_news_img_video_tag_position_absolute fh5co_hide_{{ loop.index }}">
+                                    <img src="{{ asset('images/thumbnail/'~ video.thumbnail ) }}" alt=""/>
+                                </div>
+                                <div class="fh5co_hover_news_img_video_tag_position_absolute_1 fh5co_hide" id="play-video_{{ loop.index }}" onclick="goto({{ video.id }})">
+                                    <div class="fh5co_hover_news_img_video_tag_position_absolute_1_play_button_1">
+                                        <div class="fh5co_hover_news_img_video_tag_position_absolute_1_play_button">
+                                            <span><i class="fa fa-play"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pt-2">
+                                <a href="#" class="d-block fh5co_small_post_heading fh5co_small_post_heading_1">
+                                    <span class="">{{ video.description }} </span></a>
+                                {#                                <div class="c_g"><i class="fa fa-clock-o"></i> Oct 16,2017</div>#}
+                            </div>
+                        </div>
+                        {% set resultTest = video.getHangmanResultByUser(app.user) %}
+                        {% if resultTest['alphabetSoup']|length > 0 or
+                            resultTest['hangmanResult']|length > 0 %}
+                            <div class="p-3 mb-2 bg-success text-white">Prueba ya presentada</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{#    </div>#}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        function goto(idVideo){
+            window.location.href = '/learning/'+idVideo;
+        }
+    </script>
+{% endblock %}

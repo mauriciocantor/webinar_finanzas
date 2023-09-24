@@ -49,6 +49,18 @@ class VideoController extends AbstractController
         ]);
     }
 
+    #[Route('/detail_module/{moduleVideo}', name: 'detail_module')]
+    public function detailModule(ModuleVideo $moduleVideo)
+    {
+        $videos = $this->videoServices->getVideosByRole(
+            $this->security->getUser()->getRoles()
+        );
+
+        return $this->render('video/detail_module.html.twig', [
+            'videos'=>$moduleVideo->getVideos()
+        ]);
+    }
+
     #[Route('/learning/{video}', name: 'learning_video')]
     public function learning(Video $video): Response
     {
