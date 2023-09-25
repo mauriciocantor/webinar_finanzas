@@ -12,6 +12,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\SwitchUserToken;
 
 class VideoController extends AbstractController
 {
@@ -76,20 +77,23 @@ class VideoController extends AbstractController
             return $this->redirectToRoute('_preview_error',["code"=>403]);
         }
 
-       /* $indexItem = array_search($video, $videos, true);
-        $playList = [
-            'before'=> $videos[$indexItem-1] ?? null,
-            'after'=> $videos[$indexItem+1] ?? null,
-        ];*/
 
         $videos = $this->videoServices->getRoleFromTestAvailable($videos, $this->security->getUser()->getRoles());
 
         $videoUser = $this->saveVideo->getVideoByUser($this->security->getUser(),$video);
+        $videosToPlaylist = $video->getModule()->getVideos()->toArray();
+
+       $indexItem = array_search($video, $videosToPlaylist, true);
+        $playList = [
+            'before'=> $videosToPlaylist[$indexItem-1] ?? null,
+            'after'=> $videosToPlaylist[$indexItem+1] ?? null,
+        ];
+
         return $this->render('video/learning.html.twig',[
             'video'     => $video,
             'videoUser' => $videoUser,
             'withTest' => (count($videos)>0),
-//            'playList' => $playList
+            'playList' => $playList
         ]);
     }
 
@@ -100,7 +104,10 @@ class VideoController extends AbstractController
             $datos = $request->request->all();
             $video = $datos['data']['video'];
 
-            $this->saveVideo->saveVideoByUser($video);
+            $token = $this->security->getToken();
+            if (!($token instanceof SwitchUserToken)) {
+                $this->saveVideo->saveVideoByUser($video);
+            }
             $result = true;
         }catch (\Exception $exception){
             $result = false;

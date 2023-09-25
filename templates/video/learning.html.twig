@@ -13,21 +13,37 @@
             </div>
         </div>
         <div class="col-6">
-            {#<div class="position-relative" id="body-playlist" style="display: none;">
+            <div class="position-relative" id="body-playlist" style="display: none;">
                 <p class="position-relative text-center">
                     Videos por ver:
                 </p>
-                <div class="btn-group position-relative top-0 start-50 translate-middle" role="group" aria-label="Basic mixed styles example">
+                <div class="previous-next-buttons">
+                    <!-- Previous link sticks to the left -->
+                    <div class="previous-next-buttons__nav">
                     {% if playList['before'] %}
                         {% set idBefore = playList['before'].id %}
-                        <a type="button" class="btn btn-danger" href="{{ url('learning_video', {'video':idBefore} ) }}"><< Anterior</a>
+                            <a class="button plus" href="{{ url('learning_video', {'video':idBefore} ) }}">
+                                <span class="bg" id="plus"></span>
+                                <span class="symbol"></span>
+                            </a>
                     {% endif %}
-                    {% if playList['after'] %}
-                        {% set idAfter = playList['after'].id %}
-                        <a type="button" class="btn btn-success" href="{{ url('learning_video', {"video":idAfter} ) }}">Siguiente >></a>
-                    {% endif %}
+                    </div>
+
+                    <!-- Next link sticks to the right -->
+                    <div class="previous-next-buttons__nav">
+                        {% if playList['after'] %}
+                            {% set idAfter = playList['after'].id %}
+                            <a class="button minus" href="{{ url('learning_video', {"video":idAfter} ) }}">
+                                <span class="bg" id="minus"></span>
+                                <span class="symbol"></span>
+                            </a>
+                        {% endif %}
+                    </div>
                 </div>
-            </div>#}
+                {#<div class="btn-group position-relative top-0 start-50 translate-middle" role="group" aria-label="Basic mixed styles example">
+
+                </div>#}
+            </div>
         </div>
     </div>
     <div class="align-content-center">

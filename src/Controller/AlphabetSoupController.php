@@ -9,6 +9,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\SwitchUserToken;
 
 class AlphabetSoupController extends AbstractController
 {
@@ -27,8 +28,10 @@ class AlphabetSoupController extends AbstractController
         $dataResult = $request->request->all();
         $dataResult['user']=$this->security->getUser();
         $dataResult['alphabetSoup']=$alphabetSoup;
-
-        $this->handleSoup->saveAlphabet($dataResult);
+        $token = $this->security->getToken();
+        if (!($token instanceof SwitchUserToken)) {
+            $this->handleSoup->saveAlphabet($dataResult);
+        }
         return $this->json(['msg'=>'correct']);
     }
 }

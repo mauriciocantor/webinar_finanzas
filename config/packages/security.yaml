@@ -21,7 +21,7 @@ security:
             # https://symfony.com/doc/current/security.html#the-firewall
 
             # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
+            switch_user: true
             form_login:
                 # "app_login" is the name of the route created previously
                 login_path: app_login
@@ -33,10 +33,16 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/video, roles: ROLE_USER }
-        - { path: ^/learning, roles: ROLE_USER }
-        - { path: ^/question, roles: ROLE_USER }
+        - { path: ^/video, roles: [ROLE_USER, ROLE_ADMIN] }
+        - { path: ^/learning, roles: [ROLE_USER, ROLE_ADMIN] }
+        - { path: ^/question, roles: [ROLE_USER, ROLE_ADMIN] }
         # - { path: ^/profile, roles: ROLE_USER }
+
+    role_hierarchy:
+        ROLE_SILVER: [ 'ROLE_USER' ]
+        ROLE_GOLDEN: [ 'ROLE_USER' ]
+        ROLE_PLATINUM: [ 'ROLE_USER' ]
+        ROLE_ADMIN: [ 'ROLE_COMMENT_ADMIN', 'ROLE_USER_ADMIN', 'ROLE_ALLOWED_TO_SWITCH' ]
 
 when@test:
     security:

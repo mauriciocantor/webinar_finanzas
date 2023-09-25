@@ -9,6 +9,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\SwitchUserToken;
 
 class HangmanController extends AbstractController
 {
@@ -27,7 +28,10 @@ class HangmanController extends AbstractController
         $dataResult = $request->request->all();
         $dataResult['user']=$this->security->getUser();
         $dataResult['video']=$video;
-        $this->hangmanHandle->saveResult($dataResult);
+        $token = $this->security->getToken();
+        if (!($token instanceof SwitchUserToken)) {
+            $this->hangmanHandle->saveResult($dataResult);
+        }
         return $this->json(['msg'=>'finish']);
     }
 }

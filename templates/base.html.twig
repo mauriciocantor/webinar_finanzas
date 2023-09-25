@@ -27,7 +27,7 @@
         <div class="container-fluid fh5co_header_bg">
             <div class="container">
                 <div class="row">
-                    <div class="col-12 fh5co_mediya_center">
+                    <div class="col-6 fh5co_mediya_center">
                         <div class="d-inline-block fh5co_trading_posotion_relative">
                             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                                 <a href="{{ url('app_logout') }}" class="treding_btn bg-danger">Cerrar Sesión</a>
@@ -40,7 +40,26 @@
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         <a class="color_fff fh5co_mediya_setting">{{ app.user.email }}</a>
                         {% endif %}
-
+                    </div>
+                    <div class="col-6 fh5co_mediya_center pt-3">
+                        {% if is_granted('IS_IMPERSONATOR') %}
+                            <div class="">
+                                <a class="color_fff fh5co_mediya_setting" href="{{ impersonation_exit_path(path('app_index')) }}">Salir del usuario de prueba</a>
+                            </div>
+                        {% endif %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <div class="">
+                                <form class="row g-3"  method="get">
+                                    <div class="col-auto">
+                                        <label for="email" class="visually-hidden">Email de prueba</label>
+                                        <input type="text" class="form-control" id="email" placeholder="Email prueba" name="_switch_user">
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="submit" class="btn btn-primary mb-3">Cambiar Temporalmente</button>
+                                    </div>
+                                </form>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -67,7 +86,9 @@
             </div>
         </div>
         {% endif %}
+        <div class="container-fluid">
         {% block body %}{% endblock %}
+        </div>
         <div class="container-fluid fh5co_footer_right_reserved">
             <div class="container">
                 <div class="row  ">
