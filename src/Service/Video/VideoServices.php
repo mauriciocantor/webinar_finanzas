@@ -59,14 +59,19 @@ class VideoServices
      */
     public function getRoleFromTestAvailable(array $allVideos, array $role): array
     {
-        $result = array_map(function (ModuleVideo $module) use ($role){
-            $module->setVideos($module->getVideos()->filter(static function (Video $video) use ($role) {
+        $videos=[];
+        $result = array_map(function (ModuleVideo $module) use ($role, &$videos){
+            $module->setVideosTest($module->getVideos()->filter(static function (Video $video) use ($role) {
                 $diff = array_intersect($video->getRoleTest(), $role);
                 return count($diff) > 0;
             }));
+            if(!$module->getVideosTest()->isEmpty()){
+                $videos = array_merge($videos, $module->getVideosTest()->toArray());
+            }
             return $module;
         }, $allVideos);
-        return $result;
+
+        return $videos;
     }
 
     public function getTestPassed(array $videos, User $user){

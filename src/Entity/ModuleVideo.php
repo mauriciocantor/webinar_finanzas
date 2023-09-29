@@ -32,9 +32,12 @@ class ModuleVideo
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $thumbnail = null;
 
+    private Collection $videosTest;
+
     public function __construct()
     {
         $this->videos = new ArrayCollection();
+        $this->videosTest = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -89,6 +92,19 @@ class ModuleVideo
     public function setVideos($videos)
     {
         $this->videos = $videos;
+    }
+
+    /**
+     * @return Collection<int, Video>
+     */
+    public function getVideosTest(): Collection
+    {
+        return $this->videosTest;
+    }
+
+    public function setVideosTest($videos)
+    {
+        $this->videosTest = $videos;
     }
 
     public function addVideo(Video $video): static

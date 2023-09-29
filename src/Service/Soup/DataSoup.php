@@ -41,12 +41,12 @@ class DataSoup
         }
         $words = $this->soup->getWords()??[];
         for($i=0; $i< count($words) ; $i++){
-            $this->setWordToSoup(($words[$i]));// con Mayuscula
+            $this->setWordToSoup(strtoupper($words[$i]));// con Mayuscula
         }
 
         $traps = $this->soup->getTraps()??[];
         for ($t=0;$t<count($traps);$t++){
-            $this->setWordToSoup(($traps[$i]));// con Mayuscula
+            $this->setWordToSoup(strtoupper($traps[$i]));// con Mayuscula
         }
 
         return $this->soupInfo;
