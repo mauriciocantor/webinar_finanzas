@@ -28,10 +28,8 @@ class AlphabetSoupController extends AbstractController
         $dataResult = $request->request->all();
         $dataResult['user']=$this->security->getUser();
         $dataResult['alphabetSoup']=$alphabetSoup;
-        $token = $this->security->getToken();
-        if (!($token instanceof SwitchUserToken)) {
-            $this->handleSoup->saveAlphabet($dataResult);
-        }
+        $this->handleSoup->saveAlphabet($dataResult);
+
         return $this->json(['msg'=>'correct']);
     }
 }

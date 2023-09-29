@@ -28,10 +28,7 @@ class HangmanController extends AbstractController
         $dataResult = $request->request->all();
         $dataResult['user']=$this->security->getUser();
         $dataResult['video']=$video;
-        $token = $this->security->getToken();
-        if (!($token instanceof SwitchUserToken)) {
-            $this->hangmanHandle->saveResult($dataResult);
-        }
+        $this->hangmanHandle->saveResult($dataResult);
         return $this->json(['msg'=>'finish']);
     }
 }

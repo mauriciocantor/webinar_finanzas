@@ -13,7 +13,7 @@ class VideoUser
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column('currentTimeVideo')]
     private ?float $currentTime = null;
 
     #[ORM\Column]

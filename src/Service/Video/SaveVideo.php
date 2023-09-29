@@ -50,6 +50,7 @@ class SaveVideo
             $videoByUser->setCurrentTime($parameters['currentTime']);
             $videoByUser->setTotalTime($parameters['totalTime']);
         }
+
         $this->entityManager->persist($videoByUser);
         return $this->entityManager->flush();
     }

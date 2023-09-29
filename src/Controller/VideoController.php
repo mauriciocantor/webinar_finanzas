@@ -77,11 +77,11 @@ class VideoController extends AbstractController
             return $this->redirectToRoute('_preview_error',["code"=>403]);
         }
 
-
+        $videosToPlaylist = $video->getModule()->getVideos()->toArray();
         $videos = $this->videoServices->getRoleFromTestAvailable($videos, $this->security->getUser()->getRoles());
 
         $videoUser = $this->saveVideo->getVideoByUser($this->security->getUser(),$video);
-        $videosToPlaylist = $video->getModule()->getVideos()->toArray();
+
 
        $indexItem = array_search($video, $videosToPlaylist, true);
         $playList = [
@@ -104,10 +104,8 @@ class VideoController extends AbstractController
             $datos = $request->request->all();
             $video = $datos['data']['video'];
 
-            $token = $this->security->getToken();
-            if (!($token instanceof SwitchUserToken)) {
-                $this->saveVideo->saveVideoByUser($video);
-            }
+            $this->saveVideo->saveVideoByUser($video);
+
             $result = true;
         }catch (\Exception $exception){
             $result = false;
