@@ -4,7 +4,7 @@
         <div>
             <div class="fh5co_heading fh5co_heading_border_bottom pt-5 pb-2 mb-4">Aprendamos en Video</div>
         </div>
-        <ul class="nav flex-column">
+        <ul class="nav list-group list-group-horizontal">
             {% for module in videos %}
                 <li class="nav-item">
                     <div class="container_image">
@@ -14,7 +14,7 @@
 
                             <div class="item">
                                 <h2>{{ module.name }}</h2>
-                                <img src="{{ asset('images/thumbnail/week1.jpg') }}" class="img-fluid" alt="week_1">
+                                <img src="{{ asset('images/thumbnail/'~ module.thumbnail ) }}" class="img-fluid" alt="week_1">
 
 
                             </div>

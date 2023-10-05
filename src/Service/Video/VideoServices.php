@@ -24,6 +24,7 @@ class VideoServices
         $repository = $this->entityManager->getRepository(ModuleVideo::class);
 
         $query = $repository->createQueryBuilder('v')
+            ->where('v.status = 1')
 //            ->orderBy('v.orderVideo')
             ->getQuery();
 
