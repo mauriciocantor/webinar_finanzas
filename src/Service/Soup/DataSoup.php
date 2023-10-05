@@ -31,9 +31,9 @@ class DataSoup
         $this->soupInfo = [];
         $this->soup = $soup;
 
-        for( $i=0; $i< $this->soup->getRows(); $i++){
+        for( $i=0; $i<= $this->soup->getRows(); $i++){
             $this->soupInfo[$i] = [];
-            for ($j=0; $j<$this->soup->getColumnSoup(); $j++){
+            for ($j=0; $j<=$this->soup->getColumnSoup(); $j++){
                 $randomWord = rand(0, count($this->alphabet)-1);
                 $word       = $this->alphabet[$randomWord];
                 $this->soupInfo[$i][$j] = $word;

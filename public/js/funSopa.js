@@ -154,9 +154,9 @@ function marcarSopa(fila,columna){
 			wordSoup.push($("#letra"+numSeccion+"_"+f+"_"+c).text());
 		}
 	}
+  	idList = wordSoup.join('').toLowerCase();
 
-  	idList = wordSoup.join('');
-	if(typeof originWords == 'string') {
+  	if(typeof originWords == 'string') {
 		originWords = originWords.split(',');
 	}
   	if(!originWords.includes(idList)){
