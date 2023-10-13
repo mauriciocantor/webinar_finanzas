@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="table-responsive-sm">
+            <h3>Reporte de videos</h3>
+            <table class="table table-sm table-bordered">
+                <thead class="table-dark">
+                <tr>
+                    <th scope="col">Sopas de Letras Correctas</th>
+                    <th scope="col">Ahorcado Correctos</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="table-secondary">
+                        <a href="{{ path('app_reports_getreportalluser',{'type':1}) }}">
+                            {{ allResult[0].Soup_Correct }}
+                        </a>
+                    </td>
+                    <td class="table-primary">
+                        <a href="{{ path('app_reports_getreportalluser',{'type':2}) }}">
+                            {{ allResult[0].Hangman_Correct }}
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+    <hr>
+<div class="table-responsive">
+    <h3>Reporte por usuarios</h3>
+    <table class="table caption-top">
+        <thead class="table-dark">
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Usuario</th>
+            <th scope="col">Perfil</th>
+            <th scope="col">Reporte</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for mix in pager %}
+        <tr>
+            <th scope="row">{{ mix.id }}</th>
+            <td>{{ mix.email }}</td>
+            <td>{{ mix.getRoleUnique }}</td>
+            <td><a href="{{ path('app_reports_getreportbyuser', {'user': mix.id}) }}">Descargar reporte</a></td>
+        </tr>
+        {% endfor %}
+        {{ pagerfanta(pager) }}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

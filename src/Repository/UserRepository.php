@@ -63,4 +63,52 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findAllQueryBuilder(){
+        return $this->createQueryBuilder('u')
+            ->where('JSON_SEARCH(u.roles, \'one\', \'ROLE_ADMIN\') is NULL')
+            ;
+    }
+
+    public function getAllUserAlphabetSoupCorrect(){
+        return $this->createQueryBuilder('u')
+            ->select([
+                'u.email',
+                'u.roles',
+                'asoupr.foundWord',
+                'asoup.words',
+                'asoup.question',
+                'mv.name',
+                'CONCAT(\'Video No \',v.id) as video'
+                ])
+            ->join('u.alphabetSoupResults', 'asoupr')
+            ->join('asoupr.alphabetSoup', 'asoup')
+            ->join('asoup.video','v')
+            ->join('v.module', 'mv')
+            ->where('asoupr.isCorrect = 1')
+            ->getQuery()
+            ->getResult()
+;
+    }
+
+    public function getAllUserHangmanCorrect(){
+        return $this->createQueryBuilder('u')
+            ->select([
+                'u.email',
+                'u.roles',
+                'hr.text',
+                'h.dictionary',
+                'h.question',
+                'mv.name',
+                'CONCAT(\'Video No \',v.id) as video'
+            ])
+            ->join('u.hangmanResults', 'hr')
+            ->join('hr.video', 'v')
+            ->join('v.hangman', 'h')
+            ->join('v.module', 'mv')
+            ->where('hr.isCorrect = 1')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

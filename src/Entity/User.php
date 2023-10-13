@@ -90,6 +90,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @see UserInterface
+     */
+    public function getRoleUnique(): string
+    {
+        $roles = $this->roles;
+        $group = '';
+        switch ($roles[0]){
+            case 'ROLE_ADMIN':
+                $group='Administración';
+                break;
+            case 'ROLE_PLATINUM':
+                $group='Grupo 3';
+                break;
+            case 'ROLE_SILVER':
+                $group='Grupo 1';
+                break;
+            case 'ROLE_GOLDEN':
+                $group='Grupo 2';
+                break;
+        }
+
+        return $group;
+    }
+
+
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
